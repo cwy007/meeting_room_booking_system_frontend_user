@@ -2,9 +2,11 @@ import { Form, Input, Button, message } from "antd";
 import "./index.scss";
 import { login } from "./services";
 import type { LoginUserDto } from "./types";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const [form] = Form.useForm<LoginUserDto>();
+  const navigate = useNavigate();
 
   const onFinish = async (values: LoginUserDto) => {
     try {
@@ -15,17 +17,21 @@ function Login() {
         localStorage.setItem("accessToken", res.data?.accessToken);
         localStorage.setItem("refreshToken", res.data?.refreshToken);
         localStorage.setItem("userInfo", JSON.stringify(res.data?.userInfo));
+
+        setTimeout(() => {
+          navigate("/"); // 登录成功后跳转到主页
+        }, 1500);
       } else {
         message.error(res.message || "登录失败，请重试");
       }
-    } catch (err) {
-      message.error(typeof err === "string" ? err : "登录失败，请重试");
+    } catch {
+      // 错误已在请求拦截器中统一提示
     }
   };
 
   return (
     <div id="login-container">
-      <h1>会议室预订系统登录</h1>
+      <h1 className="title">会议室预订系统登录</h1>
 
       <Form form={form} layout="vertical" onFinish={onFinish}>
         <Form.Item

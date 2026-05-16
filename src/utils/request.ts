@@ -1,4 +1,5 @@
 import axios from "axios";
+import globalMessage from "./globalMessage";
 
 const request = axios.create({
   baseURL: "http://localhost:3000",
@@ -8,7 +9,13 @@ const request = axios.create({
 request.interceptors.response.use(
   (response) => response.data,
   (error) => {
-    return Promise.reject(error.response?.data ?? error.message);
+    const errMsg: string =
+      error.response?.data?.data ??
+      error.response?.data?.message ??
+      error.message ??
+      "请求失败，请重试";
+    globalMessage.instance?.error(errMsg);
+    return Promise.reject(errMsg);
   }
 );
 
