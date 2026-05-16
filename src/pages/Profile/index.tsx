@@ -4,6 +4,7 @@ import { UserOutlined } from "@ant-design/icons";
 import "./index.scss";
 import { updateUser, getUpdateCaptcha, getUserInfo } from "./services";
 import type { UpdateUserDto, UserDetailVo } from "./types";
+import AvatarUpload from "../../components/AvatarUpload";
 
 function Profile() {
   const [userInfo, setUserInfo] = useState<UserDetailVo | null>(null);
@@ -86,7 +87,7 @@ function Profile() {
         <div className="avatar-wrapper">
           <Avatar
             size={80}
-            src={userInfo?.headPic || undefined}
+            src={userInfo?.headPic ? `http://localhost:3000/${userInfo.headPic}` : undefined}
             icon={!userInfo?.headPic ? <UserOutlined /> : undefined}
           />
           <span style={{ fontWeight: 600, fontSize: 16 }}>{userInfo?.username}</span>
@@ -102,8 +103,10 @@ function Profile() {
             email: userInfo?.email,
           }}
         >
-          <Form.Item label="头像地址" name="headPic">
-            <Input placeholder="请输入头像 URL" />
+          <Form.Item label="头像" name="headPic">
+            <AvatarUpload
+              onChange={(path) => setUserInfo((prev) => (prev ? { ...prev, headPic: path } : prev))}
+            />
           </Form.Item>
 
           <Form.Item label="昵称" name="nickName">

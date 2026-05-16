@@ -13,3 +13,11 @@ export function updateUser(data: UpdateUserDto) {
 export function getUpdateCaptcha() {
   return request.get<never, ApiResponse<string>>("/user/update/captcha");
 }
+
+export function uploadAvatar(file: File) {
+  const formData = new FormData();
+  formData.append("file", file);
+  return request.post<never, ApiResponse<string>>("/user/upload", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+}
