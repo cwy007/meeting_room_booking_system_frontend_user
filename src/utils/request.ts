@@ -6,8 +6,29 @@ const request = axios.create({
   timeout: 10000,
 });
 
+request.interceptors.request.use((config) => {
+  const token = localStorage.getItem("accessToken");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 request.interceptors.response.use(
-  (response) => response.data,
+  (response) => {
+    if (response.data?.code === 401) {
+      globalMessage.instance?.error("登录状态已过期，请重新登录");
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+      localStorage.removeItem("userInfo");
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 1500);
+      return Promise.reject("未授权");
+    }
+
+    return response.data;
+  },
   (error) => {
     const errMsg: string =
       error.response?.data?.data ??

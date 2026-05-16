@@ -3,13 +3,20 @@ import ErrorPage from "./pages/ErrorPage";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import UpdatePassword from "./pages/UpdatePassword";
-import Home from "./pages/Home";
+import Layout from "./components/Layout";
+import Profile from "./pages/Profile";
 
 const routes: RouteObject[] = [
   {
     path: "/",
-    element: <Home />,
+    element: <Layout />,
     errorElement: <ErrorPage />,
+    children: [
+      {
+        path: "/profile",
+        element: <Profile />,
+      },
+    ],
   },
   {
     path: "/login",

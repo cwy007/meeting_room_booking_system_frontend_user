@@ -1,0 +1,26 @@
+#profile-container {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 32px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  .avatar-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 24px;
+    gap: 12px;
+  }
+
+  .captcha-row {
+    display: flex;
+    gap: 8px;
+
+    .ant-form-item {
+      flex: 1;
+      margin-bottom: 0;
+    }
+  }
+}
