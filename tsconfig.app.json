@@ -5,7 +5,7 @@
     "lib": ["ES2023", "DOM"],
     "module": "esnext",
     "types": ["vite/client"],
-    "skipLibCheck": true,
+    "skipLibCheck": true, "paths": { "antd": ["./node_modules/antd/es/index"] },
 
     /* Bundler mode */
     "moduleResolution": "bundler",
