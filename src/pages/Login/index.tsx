@@ -1,17 +1,26 @@
-import { Form, Input, Button } from "antd";
+import { Form, Input, Button, message } from "antd";
 import "./index.scss";
-
-interface LoginUser {
-  username: string;
-  password: string;
-}
+import { login } from "./services";
+import type { LoginUserDto } from "./types";
 
 function Login() {
-  const [form] = Form.useForm<LoginUser>();
+  const [form] = Form.useForm<LoginUserDto>();
 
-  const onFinish = (values: LoginUser) => {
-    console.log("Received values of form: ", values);
-    // Here you can handle the login logic, e.g., send a request to your backend
+  const onFinish = async (values: LoginUserDto) => {
+    try {
+      const res = await login(values);
+      if (res.code === 200) {
+        message.success("登录成功");
+        console.log("login response:", res);
+        localStorage.setItem("accessToken", res.data?.accessToken);
+        localStorage.setItem("refreshToken", res.data?.refreshToken);
+        localStorage.setItem("userInfo", JSON.stringify(res.data?.userInfo));
+      } else {
+        message.error(res.message || "登录失败，请重试");
+      }
+    } catch (err) {
+      message.error(typeof err === "string" ? err : "登录失败，请重试");
+    }
   };
 
   return (
