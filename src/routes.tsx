@@ -1,10 +1,12 @@
-import type { RouteObject } from "react-router-dom";
+import { Navigate, type RouteObject } from "react-router-dom";
 import ErrorPage from "./pages/ErrorPage";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import UpdatePassword from "./pages/UpdatePassword";
 import Layout from "./components/Layout";
 import Profile from "./pages/Profile";
+import MeetingRoom from "./pages/MeetingRoom";
+import BookingHistory from "./pages/BookingHistory";
 
 const routes: RouteObject[] = [
   {
@@ -13,8 +15,20 @@ const routes: RouteObject[] = [
     errorElement: <ErrorPage />,
     children: [
       {
+        index: true,
+        element: <Navigate to="/meeting-room" replace />,
+      },
+      {
         path: "/profile",
         element: <Profile />,
+      },
+      {
+        path: "/booking-history",
+        element: <BookingHistory />,
+      },
+      {
+        path: "/meeting-room",
+        element: <MeetingRoom />,
       },
     ],
   },

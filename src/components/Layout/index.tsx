@@ -1,9 +1,14 @@
 import { Outlet, useNavigate } from "react-router-dom";
-import { Layout, Dropdown, Avatar } from "antd";
+import { Layout, Dropdown, Avatar, Menu } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 
-const { Header, Content } = Layout;
+const { Header, Content, Sider } = Layout;
+
+const sideMenuItems: MenuProps["items"] = [
+  { key: "/meeting-room", label: "会议室管理" },
+  { key: "/booking-history", label: "预订历史" },
+];
 
 function AppLayout() {
   const navigate = useNavigate();
@@ -55,9 +60,22 @@ function AppLayout() {
         </Dropdown>
       </Header>
 
-      <Content style={{ padding: 24 }}>
-        <Outlet />
-      </Content>
+      <Layout>
+        <Sider width={200} style={{ background: "#fff", borderRight: "1px solid #f0f0f0" }}>
+          <Menu
+            mode="inline"
+            selectedKeys={[location.pathname]}
+            defaultOpenKeys={["meeting-room"]}
+            style={{ height: "100%", borderRight: 0 }}
+            items={sideMenuItems}
+            onClick={({ key }) => navigate(key)}
+          />
+        </Sider>
+
+        <Content style={{ padding: 24 }}>
+          <Outlet />
+        </Content>
+      </Layout>
     </Layout>
   );
 }
