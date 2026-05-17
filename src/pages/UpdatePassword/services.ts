@@ -1,5 +1,5 @@
 import type { ApiResponse } from "../../common/types";
-import request from "../../utils/request";
+import request from "../../common/utils/request";
 import type { UpdateUserPasswordDto } from "./types";
 
 export function updatePassword(data: UpdateUserPasswordDto) {

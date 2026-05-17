@@ -1,5 +1,5 @@
 import type { ApiResponse } from "../../common/types";
-import request from "../../utils/request";
+import request from "../../common/utils/request";
 import type { UpdateUserDto, UserDetailVo } from "./types";
 
 export function getUserInfo() {
