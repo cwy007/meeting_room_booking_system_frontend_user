@@ -1,13 +1,13 @@
 import { useState, useEffect, useCallback } from "react";
-import { Form, Input, InputNumber, Button, Table, Tag, Space, App } from "antd";
-import { PlusOutlined, SearchOutlined } from "@ant-design/icons";
+import { Form, Input, InputNumber, Button, Table, Tag, Space } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
 import type { TableProps } from "antd";
 import type { MeetingRoom, MeetingRoomListParams } from "./types";
-import { getMeetingRoomList, deleteMeetingRoom } from "./services";
+import { getMeetingRoomList } from "./services";
 import MeetingRoomModal from "./MeetingRoomModal";
+import BookingModal from "@/pages/BookingList/BookingModal";
 
 function MeetingRoomList() {
-  const { message, modal } = App.useApp();
   const [form] = Form.useForm<Pick<MeetingRoomListParams, "name" | "capacity" | "equipment">>();
   const [data, setData] = useState<MeetingRoom[]>([]);
   const [total, setTotal] = useState(0);
@@ -17,7 +17,16 @@ function MeetingRoomList() {
 
   // 弹窗状态
   const [modalOpen, setModalOpen] = useState(false);
-  const [editing, setEditing] = useState<MeetingRoom | null>(null);
+  const [editing] = useState<MeetingRoom | null>(null);
+
+  // 预订弹窗
+  const [bookingModalOpen, setBookingModalOpen] = useState(false);
+  const [bookingRoomId, setBookingRoomId] = useState<number | undefined>();
+
+  const openBooking = (record: MeetingRoom) => {
+    setBookingRoomId(record.id);
+    setBookingModalOpen(true);
+  };
 
   const fetchData = useCallback(
     async (
@@ -65,31 +74,6 @@ function MeetingRoomList() {
     fetchData(newPage, newPageSize, form.getFieldsValue());
   };
 
-  const openCreate = () => {
-    setEditing(null);
-    setModalOpen(true);
-  };
-
-  const openEdit = (record: MeetingRoom) => {
-    setEditing(record);
-    setModalOpen(true);
-  };
-
-  const handleDelete = (record: MeetingRoom) => {
-    modal.confirm({
-      title: "确认删除",
-      content: `确定要删除会议室「${record.name}」吗？此操作不可撤销。`,
-      okText: "删除",
-      okButtonProps: { danger: true },
-      cancelText: "取消",
-      onOk: async () => {
-        await deleteMeetingRoom(record.id);
-        message.success("删除成功");
-        fetchData(page, pageSize, form.getFieldsValue());
-      },
-    });
-  };
-
   const columns: TableProps<MeetingRoom>["columns"] = [
     { title: "名称", dataIndex: "name" },
     { title: "容量", dataIndex: "capacity", width: 80 },
@@ -127,6 +111,17 @@ function MeetingRoomList() {
     //     </Space>
     //   ),
     // },
+    {
+      title: "操作",
+      key: "action",
+      render: (_: unknown, record: MeetingRoom) => (
+        <Space>
+          <Button size="small" type="link" onClick={() => openBooking(record)}>
+            预订
+          </Button>
+        </Space>
+      ),
+    },
   ];
 
   return (
@@ -185,6 +180,13 @@ function MeetingRoomList() {
           fetchData(page, pageSize, form.getFieldsValue());
         }}
         onCancel={() => setModalOpen(false)}
+      />
+
+      <BookingModal
+        open={bookingModalOpen}
+        defaultRoomId={bookingRoomId}
+        onSuccess={() => setBookingModalOpen(false)}
+        onCancel={() => setBookingModalOpen(false)}
       />
     </div>
   );

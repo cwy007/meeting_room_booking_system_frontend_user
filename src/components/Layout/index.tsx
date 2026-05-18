@@ -7,7 +7,7 @@ const { Header, Content, Sider } = Layout;
 
 const sideMenuItems: MenuProps["items"] = [
   { key: "/meeting-room", label: "会议室管理" },
-  { key: "/booking-history", label: "预订历史" },
+  { key: "/booking-list", label: "预订历史" },
 ];
 
 function AppLayout() {

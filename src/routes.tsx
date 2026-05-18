@@ -6,7 +6,7 @@ import UpdatePassword from "./pages/UpdatePassword";
 import Layout from "./components/Layout";
 import Profile from "./pages/Profile";
 import MeetingRoom from "./pages/MeetingRoom";
-import BookingHistory from "./pages/BookingHistory";
+import BookingList from "./pages/BookingList";
 
 const routes: RouteObject[] = [
   {
@@ -23,8 +23,8 @@ const routes: RouteObject[] = [
         element: <Profile />,
       },
       {
-        path: "/booking-history",
-        element: <BookingHistory />,
+        path: "/booking-list",
+        element: <BookingList />,
       },
       {
         path: "/meeting-room",
