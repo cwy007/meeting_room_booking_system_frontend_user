@@ -5,6 +5,7 @@ import "./index.scss";
 import { updateUser, getUpdateCaptcha, getUserInfo } from "./services";
 import type { UpdateUserDto, UserDetailVo } from "./types";
 import AvatarUpload from "../../components/AvatarUpload";
+import { formatImgUrl } from "@/common/utils";
 
 function Profile() {
   const [userInfo, setUserInfo] = useState<UserDetailVo | null>(null);
@@ -87,7 +88,7 @@ function Profile() {
         <div className="avatar-wrapper">
           <Avatar
             size={80}
-            src={userInfo?.headPic ? `http://localhost:3000/${userInfo.headPic}` : undefined}
+            src={formatImgUrl(userInfo?.headPic || "")}
             icon={!userInfo?.headPic ? <UserOutlined /> : undefined}
           />
           <span style={{ fontWeight: 600, fontSize: 16 }}>{userInfo?.username}</span>

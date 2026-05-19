@@ -3,8 +3,7 @@ import { Upload, message } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import type { UploadFile } from "antd";
 import { uploadAvatar } from "../../pages/Profile/services";
-
-const BASE_URL = "http://localhost:3000";
+import { formatImgUrl } from "@/common/utils";
 
 interface AvatarUploadProps {
   /** 当前头像路径（相对路径，如 uploads/xxx.gif），由 Form 注入 */
@@ -20,7 +19,7 @@ function AvatarUpload({ value, onChange }: AvatarUploadProps) {
   // 当外部 value 变化时（如初始化加载）同步 fileList
   useEffect(() => {
     if (value) {
-      setFileList([{ uid: "-1", name: "avatar", status: "done", url: `${BASE_URL}/${value}` }]);
+      setFileList([{ uid: "-1", name: "avatar", status: "done", url: formatImgUrl(value) }]);
     } else {
       setFileList([]);
     }
@@ -38,7 +37,7 @@ function AvatarUpload({ value, onChange }: AvatarUploadProps) {
         try {
           const res = await uploadAvatar(file as File);
           if (res.code === 200) {
-            const url = `${BASE_URL}/${res.data}`;
+            const url = formatImgUrl(res.data);
             setFileList([{ uid: "-1", name: (file as File).name, status: "done", url }]);
             onChange?.(res.data);
             onSuccess?.(res);

@@ -29,6 +29,10 @@ function Login() {
     }
   };
 
+  const handleGoogleLogin = () => {
+    window.location.href = "http://localhost:3000/user/google"; // 直接跳转到后端的 Google 登录接口
+  };
+
   return (
     <div id="login-container">
       <h1 className="title">会议室预订系统登录</h1>
@@ -60,6 +64,11 @@ function Login() {
         </Form.Item>
       </Form>
       {/* Add your login form here */}
+
+      {/* google login button */}
+      <Button type="default" block onClick={handleGoogleLogin}>
+        使用 Google 登录
+      </Button>
     </div>
   );
 }
